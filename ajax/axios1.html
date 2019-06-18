@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='UTF-8'>
+    <title>Axios #01</title>
+    <link rel='stylesheet' href='css/estilo.css'>
+    <script src="js/axios.js"></script>
+</head>
+
+<body class="conteudo exercicio">
+    <h1>Estados</h1>
+
+    <script>
+        //Axios não é uma biblioteca padrão, é preciso baixalo para utilizalo, nesse arquivo , ele se encrontra na pasta js/axios.js
+
+        const url = 'dados/estados.json'
+        axios(url).then(resp => { //Função then recebe a resposta do axios(url)
+            const itens = resp.data.reduce( // no axios a resposta ja esta no arquivo data, diferente do fetch que é preciso da linha (.then(resp => resp.json()))
+                (html, estado) => html + `<li>${estado.nome}</li>`, ''
+            )
+            document.body.insertAdjacentHTML('beforeend', `<ul>${itens}</ul>`)
+        })
+    </script>
+</body>

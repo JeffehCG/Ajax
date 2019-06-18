@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='UTF-8'>
+    <title>Mini SPA</title>
+    <link rel='stylesheet' href='../css/estilo.css'>
+    <style>
+        nav {
+            font-size: 2em;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #FFF;
+            padding: 0 10px;
+        }
+    </style>
+</head>
+
+<body class="conteudo">
+    <nav>
+        <a href wm-link="series.html" wm-destino=".pagina">Séries</a> |
+        <a href wm-link="linguagens.html" wm-destino=".pagina">Linguagens</a>
+    </nav>
+    <div class="pagina"></div>
+    <script>
+
+        //função ajax
+        function navegarViaAjax(url,seletor, push = true){ //push - (quando usuario clicar para voltar na pagina push sera igual a false, para não salvar no historico de novo)
+            if(!url|| !seletor){return} //Se algum dos atributos estiver vasio sair da função
+            const elemento = document.querySelector(seletor) //pegando elemento
+            fetch(url)
+                .then(resp => resp.text()) //Como vai pegar um arquivo html, e não json é utilizado text
+                .then(html => {
+                    elemento.innerHTML = html //Colocando elemento html no elemento
+                    if(push){ //se push for true coloca mais um registro
+                        history.pushState({seletor}, "PaginaAjax", url)//Colocando elemento no historico de paginas visitadas pushState(stado, titulo, url)
+                    }
+                })
+        }
+
+        //executando viagem na pagina
+        document.querySelectorAll('[wm-link]').forEach(link => { //pegando todos elementos com wm-link
+            const url = link.attributes['wm-link'].value //pegando o link
+            const seletorDestino = link.attributes['wm-destino'].value //pegando o destino
+
+            link.onclick = e => { //pegar elemento que disparou a função
+                e.preventDefault()
+                navegarViaAjax(url, seletorDestino)
+            }
+        })
+
+        window.onpopstate = e => { //evento de pilha, quando volta vai tirando os elementos do historico 
+            if(e.state){
+                navegarViaAjax(window.location.href, e.state.seletor, false)
+            }
+        }
+    </script>
+</body>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='UTF-8'>
+    <title>Fetch API #01</title>
+    <link rel='stylesheet' href='css/estilo.css'>
+</head>
+
+<body class="conteudo exercicio">
+    <h1>Estados</h1>
+
+    <script>
+        const url = 'dados/estados.json'
+        fetch(url) //Retorna uma promisse, procurando arquivo
+            .then(resp => resp.json()) //resp.json() irar retornar uma promisse
+            .then(estados => { //Retornada a promisse com o arquivo json convertido
+                const itens = estados.reduce( //itens vai ser um array com uma lista de todos estados
+                    (html, estado) => html + `<li>${estado.nome}</li>`, '' //É precisso uma string vazia no final, pois vai ser o começo do reduce
+                )
+                document.body.insertAdjacentHTML('beforeend', `<ul>${itens}</ul>`) //colocando no html dentro de uma ul
+            })
+    </script>
+</body>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='UTF-8'>
+    <title>XMLHttpRequest #03</title>
+    <link rel='stylesheet' href='css/estilo.css'>
+</head>
+
+<body class="conteudo exercicio">
+    <h1>Estados</h1>
+
+    <script>
+        //AJAX COM XML
+        function ajax(config){
+            const xhr = new XMLHttpRequest()
+            xhr.open(config.metodo, config.url, true)
+
+            xhr.onreadystatechange = e => {//onreadystatechange evento que verifica quando o status da requisição muda (0 - não iniciada, 1 - estabelecida, 2 - recebida , 3 - processada req, 4 - concluida, etc...)
+                if(xhr.readyState === 4){ //se o status da requisição for concluido
+                    if(xhr.status === 200){
+                        config.sucesso(xhr.responseXML) //responseXML recebe um xml
+                    }else if (xhr.status >= 400) {
+                        config.erro({
+                            code: xhr.status, // codigo do erro
+                            text: xhr.statusText // texto do erro
+                        })
+                    }  
+                    
+                }
+            }
+
+            xhr.send() //chamando send sem parametro, pois é uma requisição get, não ira enviar arquivo para o servidor
+
+        }
+
+        //Nessa lição, invez de utilizar DOM (Pai, filho, createElement, appendChild) - sera armazenado tudo em uma string, e depois colocado no html
+        ajax({
+            url: 'dados/estados.xml',
+            metodo: 'get',
+            sucesso(resposta){
+                const estados = resposta.getElementsByTagName('estado') //pegando o elemento estado dentro do XML
+                const itens = Array.from(estados).reduce( //Percorrendo estados, li's são acumulados dentro de html e depois em itens
+                    (html, estado) => html + `<li>${estado.attributes.nome.value}</li>` , '' //Criando linha de li com o nove do estado
+                )
+                document.body.insertAdjacentHTML('beforeend', `<ul>${itens}</ul>` ) //colocando o conjuntos de <li> dentro de uma <ul> e colocando no HTML
+            },
+            erro(e){
+                const msg = document.createTextNode(`${e.code}: ${e.text}`)
+                document.body.appendChild(msg)
+            }
+        })
+    </script>
+</body>

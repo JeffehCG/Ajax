@@ -1,0 +1,17 @@
+npm init -y - criar arquivo package.json (descreve alguns scripts dependencias etc...)
+
+dependencias(
+    body-parser - responsavel por fazer o parse da requisição "passagem de parametros de formulario etc..."
+    express - servidor
+    multer - fazer uplod de arquivos
+)
+
+devdependencias{
+    nodemon - toda vez que o arquivo é alterado, é recaregada a pagina automaticamente
+}
+
+npm i - instala dependencias dentro do arquivo package.json
+
+nesse modulo o arquivo server.js é o servidor , responsavel pelas requisiçoes 
+
+npm start - metodo dentro do package.json , que chama do nodemon e o server.js

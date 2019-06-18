@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='UTF-8'>
+    <title>Ajax com jQuery</title>
+    <link rel='stylesheet' href='css/estilo.css'>
+    <script src="js/jquery.js"></script>
+</head>
+
+<body class="conteudo exercicio">
+    <h1>jQuery Get/Post</h1>
+    <div id="get"></div>
+    <div id="post"></div>
+
+    <script>
+        //jquery não é uma biblioteca padrão, é preciso baixalo para utilizalo, nesse arquivo , ele se encrontra na pasta js/jquery.js
+
+        function exibirResultado(id, dados) {
+            const texto = JSON.stringify(dados) // convertendo objeto em json em string
+            document.getElementById(id).innerHTML = texto
+        }
+
+        //Jquery é referenciado como jquery ou $ 
+        $.ajax({
+            url: 'parOuImpar',
+            data: {
+                numero:5
+            },
+            success(data) {
+                exibirResultado('get',data)
+            }
+        })
+
+        $.ajax({
+            url: 'formulario',
+            method: 'post',
+            data: {
+               nome: 'João',
+                sobrenome: 'Silva'
+            },
+            success(data){ //Função callback
+                exibirResultado('post',data)
+            },
+            error(e){ //Função callback
+                exibirResultado('post',e)
+            }
+        })
+    </script>
+</body>

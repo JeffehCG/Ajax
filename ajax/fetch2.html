@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='UTF-8'>
+    <title>Fetch API #02</title>
+    <link rel='stylesheet' href='css/estilo.css'>
+    <style>
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form input,
+        form select,
+        form button {
+            margin: 10px;
+            font-size: 1.6em;
+        }
+    </style>
+</head>
+
+<body class="conteudo exercicio">
+    <h1>Formulário Via Fetch</h1>
+    <form name="usuarioForm" action="formulario" method="post">
+        <input type="text" name="nome" placeholder="Nome..." />
+        <input type="text" name="sobrenome" placeholder="Sobrenome..." />
+        <button>Salvar</button>
+    </form>
+    <div id="resultado"></div>
+    <script>
+        document.usuarioForm.onsubmit = async e => { //intercepitando o submit do formulario "usuarioForm"
+            e.preventDefault() //Previnir evento padrão do onsubmit
+
+            const form = e.target //elemento que disparou o elemento
+            const data = new FormData(form) //pega todos os dados que foram preenxidos no formulario, e joga nesse objeto "data"
+            data.append('ajax',true) //Adicionando um novo atributo, para testar
+
+            const options = { //Objeto com configurações para função fatch
+                method: form.method, //Recebendo o metodo post de method
+                body: new URLSearchParams(data) //passar os dados do formulario para ir na submição (passar para o backend) pela url
+                
+            }
+
+            const resultado = document.getElementById('resultado') //Pegando o elemento div da pagina
+
+            //Requisição com Fetch
+            // fetch(form.action, options) //form.action - url que quer desparar , options - configurações do fetch
+            //     .then(resp => resp.json()) //Pegando resposta da promisse
+            //     .then(json => {
+            //         resultado.innerHTML = JSON.stringify(json) //Convertendo o json em string e Jogando dentro dessa div
+            //     })
+            //     .catch(e => {
+            //         resultado.innerHTML = e //Cuidado na hora de enviar os erros
+            //     })
+
+            //Requisição com Async Await
+
+            try {
+                const resp = await fetch(form.action, options)
+                const json = await resp.json()
+                resultado.innerHTML = JSON.stringify(json)
+            }catch(e){
+                resultado.innerHTML = e
+            }
+        }
+    </script>
+</body>
